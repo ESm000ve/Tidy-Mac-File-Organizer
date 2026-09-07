@@ -1,9 +1,5 @@
 # Tidy — File Organizer
 
-Tidy is a modern, beautifully designed file organizer built with Electron and React. It brings an elegant and intuitive interface to an otherwise tedious task, making it easy to keep your directories clean and organized.
-
-![Tidy App Screenshot](./build/icon.png)
-
 ## Features
 
 - **Dynamic Theme** — Supports Light, Dark, and System appearance.
