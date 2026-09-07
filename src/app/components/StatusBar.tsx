@@ -1,16 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import {
-  ArrowRightLeft,
-  Pencil,
-  Copy,
-  AlertCircle,
-  ScrollText,
-  X,
-  Terminal,
-  ChevronRight,
-} from "lucide-react";
 
+import { WarningCircle as AlertCircle, ArrowLeftRight as ArrowRightLeft, Check, ChevronRight, CircleDashed, Copy, Pencil, Scroll as ScrollText, Command as Terminal, X } from "./icons";
 // ─── Types ────────────────────────────────────────────────────────────────────
 export type RunState = "idle" | "scanning" | "running" | "completed" | "error";
 
@@ -27,7 +18,6 @@ export interface RunMetrics {
 interface StatusBarProps {
   runState: RunState;
   metrics: RunMetrics;
-  progress: number; // 0–100
   logEvents?: { level: "info" | "warn" | "error" | "success"; message: string; time: string }[];
 }
 
@@ -68,20 +58,23 @@ function MetricChip({
 }) {
   return (
     <div
+      aria-label={`${value} ${label}`}
       className={`flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] transition-colors ${emphasized
         ? "bg-red-500/10"
-        : "bg-transparent hover:bg-white/[0.04]"
+        : "bg-transparent hover:bg-black/[0.04] dark:hover:bg-white/[0.04]"
         }`}
     >
-      <span className={`flex-shrink-0 ${colorClass}`}>{icon}</span>
+      <span className={`flex-shrink-0 ${colorClass}`} aria-hidden="true">{icon}</span>
       <span
-        className={`text-[12px] tabular-nums ${emphasized ? "text-red-400" : "text-white/65"
+        aria-hidden="true"
+        className={`text-[13px] tabular-nums ${emphasized ? "text-red-500 dark:text-red-400" : "text-foreground/80 dark:text-white/65"
           }`}
       >
         {value.toLocaleString()}
       </span>
       <span
-        className={`text-[11px] ${emphasized ? "text-red-400/70" : "text-white/28"
+        aria-hidden="true"
+        className={`text-[13px] ${emphasized ? "text-red-500/70 dark:text-red-400/70" : "text-foreground/60 dark:text-white/50"
           }`}
       >
         {label}
@@ -93,35 +86,46 @@ function MetricChip({
 /** Thin vertical divider between metrics */
 function MetricDivider() {
   return (
-    <div className="w-px h-3.5 bg-white/[0.08] mx-0.5 shrink-0" />
+    <div className="w-px h-3.5 bg-black/[0.08] dark:bg-white/[0.08] mx-0.5 shrink-0" aria-hidden="true" />
   );
 }
 
-/** Status indicator dot */
+/** Status indicator dot/icon */
 function StatusDot({ runState }: { runState: RunState }) {
+  const statusLabel =
+    runState === "running" ? "Running" :
+      runState === "completed" ? "Completed" :
+        runState === "error" ? "Error" : "Idle";
+
   if (runState === "running") {
     return (
-      <div className="relative w-2 h-2 flex items-center justify-center shrink-0">
-        <motion.div
-          className="absolute w-2 h-2 rounded-full bg-[#0A84FF]"
-          animate={{ scale: [1, 1.8, 1], opacity: [1, 0, 1] }}
-          transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <div className="w-1.5 h-1.5 rounded-full bg-[#0A84FF] relative z-10" />
+      <div className="relative w-3 h-3 flex items-center justify-center shrink-0" role="status" aria-label={statusLabel}>
+        <CircleDashed className="w-3 h-3 text-[var(--system-blue)] animate-spin" aria-hidden="true" />
       </div>
     );
   }
 
-  const dotColor =
-    runState === "completed"
-      ? "bg-[#32D74B]"
-      : runState === "error"
-        ? "bg-red-500"
-        : "bg-white/20";
+  if (runState === "completed") {
+    return (
+      <div className="flex items-center justify-center w-3 h-3 shrink-0 rounded-full bg-[var(--system-green)]" role="status" aria-label={statusLabel}>
+        <Check className="w-2 h-2 text-white" aria-hidden="true" />
+      </div>
+    );
+  }
+
+  if (runState === "error") {
+    return (
+      <div className="flex items-center justify-center w-3 h-3 shrink-0 rounded-full bg-[var(--system-red)]" role="status" aria-label={statusLabel}>
+        <X className="w-2 h-2 text-white" aria-hidden="true" />
+      </div>
+    );
+  }
 
   return (
     <div
-      className={`w-1.5 h-1.5 rounded-full shrink-0 transition-colors duration-500 ${dotColor}`}
+      role="status"
+      aria-label={statusLabel}
+      className="w-2 h-2 rounded-full shrink-0 transition-colors duration-500 bg-black/10 dark:bg-white/20"
     />
   );
 }
@@ -142,9 +146,9 @@ function LogDrawer({
 
   const levelStyle = {
     info: { color: "text-white/50", prefix: "·" },
-    success: { color: "text-[#32D74B]/80", prefix: "✓" },
+    success: { color: "text-[var(--system-green)]/80", prefix: "✓" },
     warn: { color: "text-amber-400/70", prefix: "⚠" },
-    error: { color: "text-red-400/80", prefix: "✕" },
+    error: { color: "text-[var(--system-red)]/80", prefix: "✕" },
   };
 
   return (
@@ -160,6 +164,7 @@ function LogDrawer({
             transition={{ duration: 0.15 }}
             className="fixed inset-0 z-40 bg-black/20"
             onClick={onClose}
+            aria-hidden="true"
           />
 
           {/* Drawer */}
@@ -169,42 +174,42 @@ function LogDrawer({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 16, opacity: 0 }}
             transition={{ duration: 0.2, ease: [0.32, 0, 0.16, 1] }}
-            className="fixed bottom-[49px] left-4 right-4 z-50 rounded-xl overflow-hidden"
+            role="dialog"
+            aria-label="Run Log"
+            aria-modal="true"
+            className="fixed bottom-[49px] left-4 right-4 z-50 rounded-xl overflow-hidden border-[0.5px] border-black/10 dark:border-white/[0.10] bg-background/80 backdrop-blur-xl shadow-[0_-8px_32px_rgba(0,0,0,0.45)]"
             style={{
               maxWidth: 680,
               marginLeft: "auto",
               marginRight: "auto",
-              background: "rgba(22,22,22,0.98)",
-              border: "0.5px solid rgba(255,255,255,0.10)",
-              boxShadow: "0 -8px 32px rgba(0,0,0,0.45)",
             }}
           >
             {/* Header */}
             <div
-              className="flex items-center justify-between px-4 py-3"
-              style={{ borderBottom: "0.5px solid rgba(255,255,255,0.07)" }}
+              className="flex items-center justify-between px-4 py-3 border-b-[0.5px] border-black/5 dark:border-white/[0.07]"
             >
               <div className="flex items-center gap-2">
-                <Terminal className="w-3.5 h-3.5 text-white/30" />
-                <span className="text-[12px] text-white/50">Run Log</span>
+                <Terminal className="w-3.5 h-3.5 text-foreground/50 dark:text-white/50" aria-hidden="true" />
+                <span className="text-[13px] text-foreground/60 dark:text-white/60">Run Log</span>
                 {metrics.timestamp && (
-                  <span className="text-[11px] text-white/25">
+                  <span className="text-[12px] text-foreground/40 dark:text-white/40">
                     — {formatTimestamp(metrics.timestamp)}
                   </span>
                 )}
               </div>
               <button
                 onClick={onClose}
-                className="w-6 h-6 flex items-center justify-center rounded-md text-white/30 hover:text-white/60 hover:bg-white/[0.08] transition-colors"
+                aria-label="Close log"
+                className="w-8 h-8 flex items-center justify-center rounded-md text-foreground/50 dark:text-white/50 hover:text-foreground/80 dark:hover:text-white/80 hover:bg-black/5 dark:hover:bg-white/[0.08] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--mac-focus-ring)]"
               >
-                <X className="w-3 h-3" />
+                <X className="w-3.5 h-3.5" aria-hidden="true" />
               </button>
             </div>
 
             {/* Log lines */}
-            <div className="overflow-y-auto max-h-56 p-4 flex flex-col gap-1.5">
+            <div className="overflow-y-auto max-h-56 p-4 flex flex-col gap-1.5" role="log" aria-live="polite">
               {lines.length === 0 ? (
-                <p className="text-[11px] text-white/25 text-center py-4">
+                <p className="text-[12px] text-foreground/40 dark:text-white/40 text-center py-4">
                   No log entries yet. Run Tidy to generate a log.
                 </p>
               ) : (
@@ -218,15 +223,16 @@ function LogDrawer({
                       transition={{ delay: i * 0.03, duration: 0.15 }}
                       className="flex items-start gap-2.5"
                     >
-                      <span className="text-[10px] font-mono text-white/20 shrink-0 mt-px w-[60px]">
+                      <span className="text-[11px] font-mono text-foreground/50 dark:text-white/45 shrink-0 mt-px w-[60px]">
                         {line.time}
                       </span>
                       <span
-                        className={`text-[10px] font-mono shrink-0 mt-px w-3 text-center ${s.color}`}
+                        className={`text-[11px] font-mono shrink-0 mt-px w-3 text-center ${s.color}`}
+                        aria-hidden="true"
                       >
                         {s.prefix}
                       </span>
-                      <span className={`text-[11px] font-mono ${s.color} leading-relaxed`}>
+                      <span className={`text-[12px] font-mono ${s.color} leading-relaxed`}>
                         {line.message}
                       </span>
                     </motion.div>
@@ -238,18 +244,17 @@ function LogDrawer({
             {/* Footer stats */}
             {lines.length > 0 && (
               <div
-                className="flex items-center gap-4 px-4 py-2.5"
-                style={{ borderTop: "0.5px solid rgba(255,255,255,0.06)" }}
+                className="flex items-center gap-4 px-4 py-2.5 border-t-[0.5px] border-black/5 dark:border-white/[0.06]"
               >
                 <div className="flex items-center gap-1">
-                  <ChevronRight className="w-2.5 h-2.5 text-white/20" />
-                  <span className="text-[10px] font-mono text-white/25">
+                  <ChevronRight className="w-2.5 h-2.5 text-foreground/30 dark:text-white/30" aria-hidden="true" />
+                  <span className="text-[11px] font-mono text-foreground/55 dark:text-white/50">
                     {lines.length} entries
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <ChevronRight className="w-2.5 h-2.5 text-white/20" />
-                  <span className="text-[10px] font-mono text-white/25">
+                  <ChevronRight className="w-2.5 h-2.5 text-foreground/45 dark:text-white/40" aria-hidden="true" />
+                  <span className="text-[11px] font-mono text-foreground/55 dark:text-white/50">
                     exit code {metrics.errors > 0 ? "1" : "0"}
                   </span>
                 </div>
@@ -263,7 +268,7 @@ function LogDrawer({
 }
 
 // ─── StatusBar ────────────────────────────────────────────────────────────────
-export function StatusBar({ runState, metrics, progress, logEvents = [] }: StatusBarProps) {
+export function StatusBar({ runState, metrics, logEvents = [] }: StatusBarProps) {
   const [logOpen, setLogOpen] = useState(false);
 
   const isRunning = runState === "running";
@@ -280,40 +285,19 @@ export function StatusBar({ runState, metrics, progress, logEvents = [] }: Statu
       />
 
       <div
-        className="fixed bottom-0 left-0 right-0 z-40 flex items-center"
+        className="flex items-center w-full"
+        role="status"
+        aria-label="Organization status"
         style={{
-          height: "48px",
-          background: "#202020",
-          borderTop: "1px solid rgba(255,255,255,0.07)",
-          fontFamily:
-            'var(--font-sf, -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif)',
+          height: "44px",
+          fontFamily: "var(--font-sf)",
         }}
       >
-        {/* ── Progress bar (running state) — sits on top border */}
-        <AnimatePresence>
-          {isRunning && (
-            <motion.div
-              key="progressbar"
-              initial={{ width: "0%" }}
-              animate={{ width: `${progress}%` }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18, ease: "linear" }}
-              className="absolute top-0 left-0 h-px"
-              style={{
-                background:
-                  "linear-gradient(90deg, #0A84FF 0%, #34AADC 60%, #5AC8FA 100%)",
-                boxShadow: "0 0 6px rgba(10,132,255,0.55)",
-              }}
-            />
-          )}
-        </AnimatePresence>
-
         <div className="flex items-center w-full px-5">
           {/* ── Left: Last Run ──────────────────────────────── */}
-          <div className="flex items-center gap-2 w-[200px] shrink-0">
+          <div className="flex items-center gap-2 w-auto min-w-[140px] shrink-0">
             <span
-              className="text-[11px] shrink-0"
-              style={{ color: "rgba(152,152,157,0.6)" }}
+              className="text-[13px] shrink-0 text-foreground/50 dark:text-white/50 font-medium"
             >
               Last Run
             </span>
@@ -325,11 +309,12 @@ export function StatusBar({ runState, metrics, progress, logEvents = [] }: Statu
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className="flex items-center gap-1"
+                  aria-label="Running"
                 >
                   {[0, 1, 2].map((i) => (
                     <motion.div
                       key={i}
-                      className="w-[3px] h-[3px] rounded-full bg-[#0A84FF]"
+                      className="w-[3px] h-[3px] rounded-full bg-[var(--system-blue)]"
                       animate={{ opacity: [0.25, 1, 0.25] }}
                       transition={{
                         duration: 1.2,
@@ -345,7 +330,7 @@ export function StatusBar({ runState, metrics, progress, logEvents = [] }: Statu
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-[11px] text-white/40 truncate"
+                  className="text-[13px] text-foreground/75 dark:text-white/70 truncate"
                 >
                   {hasLastRun
                     ? formatTimestamp(metrics.timestamp!)
@@ -355,84 +340,59 @@ export function StatusBar({ runState, metrics, progress, logEvents = [] }: Statu
             </AnimatePresence>
           </div>
 
-          {/* ── Middle: Metrics ─────────────────────────────── */}
-          <div className="flex-1 flex items-center justify-center">
+          {/* ── Middle: Spacer ─────────────────────────────── */}
+          <div className="flex-1 flex items-center justify-center p-1" aria-live="polite">
+          </div>
+
+          {/* ── Right: Metrics, Log & Status ────────────────── */}
+          <div className="flex items-center gap-2.5 w-[320px] shrink-0 justify-end">
             <AnimatePresence mode="wait">
-              {isRunning ? (
+              {!isRunning && hasLastRun && (
                 <motion.div
-                  key="running-msg"
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.18 }}
-                  className="flex items-center gap-2.5"
-                >
-                  <span className="text-[12px] text-white/45">
-                    Organizing files…
-                  </span>
-                  <span
-                    className="text-[11px] tabular-nums"
-                    style={{ color: "#0A84FF", opacity: 0.7 }}
-                  >
-                    {Math.round(progress)}%
-                  </span>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="metrics-row"
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.22 }}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
                   className="flex items-center"
                 >
                   <MetricChip
                     icon={<ArrowRightLeft className="w-3 h-3" />}
                     value={metrics.moved}
                     label="moved"
-                    colorClass="text-white/30"
+                    colorClass="text-foreground/50 dark:text-white/50"
                   />
                   <MetricDivider />
                   <MetricChip
                     icon={<Pencil className="w-3 h-3" />}
                     value={metrics.renamed}
                     label="renamed"
-                    colorClass="text-[#0A84FF]/60"
-                  />
-                  <MetricDivider />
-                  <MetricChip
-                    icon={<Copy className="w-3 h-3" />}
-                    value={metrics.duplicates}
-                    label="duplicates"
-                    colorClass="text-amber-400/55"
+                    colorClass="text-[var(--system-blue)]"
                   />
                   <MetricDivider />
                   <MetricChip
                     icon={<AlertCircle className="w-3 h-3" />}
                     value={metrics.errors}
                     label="errors"
-                    colorClass={hasErrors ? "text-red-400/80" : "text-white/22"}
+                    colorClass={hasErrors ? "text-red-500/80 dark:text-red-400/80" : "text-foreground/40 dark:text-white/40"}
                     emphasized={hasErrors}
                   />
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
 
-          {/* ── Right: View Log + Status Dot ────────────────── */}
-          <div className="flex items-center gap-3 w-[200px] shrink-0 justify-end">
-            <motion.button
+            <MetricDivider />
+
+            <button
               onClick={() => setLogOpen((o) => !o)}
-              whileTap={{ scale: 0.96 }}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-[7px] text-[11px] transition-all ${hasErrors
-                ? "text-red-400/80 hover:text-red-400 hover:bg-red-500/10"
-                : "text-white/35 hover:text-white/60 hover:bg-white/[0.05]"
+              aria-label="View run log"
+              aria-expanded={logOpen}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-[7px] text-[13px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--mac-focus-ring)] border-[0.5px] border-black/10 dark:border-white/10 ${hasErrors
+                ? "text-[var(--system-red)] hover:text-[var(--system-red)] hover:bg-red-500/10 dark:hover:bg-[var(--system-red)]/20"
+                : "text-[var(--mac-secondary-label)] hover:text-[var(--mac-label)] bg-black/[0.04] dark:bg-white/[0.04] hover:bg-black/[0.07] dark:hover:bg-white/[0.07]"
                 }`}
-              style={{ border: "0.5px solid rgba(255,255,255,0.07)" }}
             >
-              <ScrollText className="w-3 h-3" />
-              View Log
-            </motion.button>
+              <ScrollText className="w-3 h-3" aria-hidden="true" />
+              Log
+            </button>
 
             <StatusDot runState={runState} />
           </div>

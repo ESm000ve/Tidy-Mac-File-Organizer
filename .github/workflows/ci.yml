@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          # The Electron binary is only needed to run the desktop app, not to
+          # type-check or build the renderer.
+          ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Install browser for the smoke test
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke test
+        run: npm test

@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
-import { FolderOpen, Upload, X, Pencil, ChevronRight, Folder } from "lucide-react";
+import { useState, useRef, useEffect, KeyboardEvent } from "react";
+
 import { clsx } from "clsx";
 
+import { ChevronRight, Folder, FolderFill as FolderOpen, Pencil, Upload, X } from "./icons";
 interface FolderCardProps {
   label: string;
   path: string;
@@ -17,9 +18,8 @@ const DEFAULT_PATHS: Record<string, string> = {
 };
 
 // ─── Apple HIG macOS 2026 glass material ──────────────────────────────────────
-// Fill: Pure White 8% — Rim: 0.5pt White 10% — Shadow: NONE
-const GLASS_CLS = "bg-black/5 dark:bg-white/[0.08] border-[0.5px] border-black/10 dark:border-white/10";
-const DRAG_CLS = "bg-[#0A84FF]/10 dark:bg-[#0A84FF]/[0.06] border-[0.5px] border-[#0A84FF]/40 dark:border-[#0A84FF]/[0.35]";
+const GLASS_CLS = "bg-black/5 dark:bg-white/[0.08] border-[0.5px] border-black/20 dark:border-white/20";
+const DRAG_CLS = "bg-[var(--system-blue)]/10 dark:bg-[var(--system-blue)]/[0.06] border-[0.5px] border-[var(--system-blue)]/50 dark:border-[var(--system-blue)]/[0.45]";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function parseSegments(path: string): { label: string; dimmed: boolean }[] {
@@ -34,14 +34,14 @@ function parseSegments(path: string): { label: string; dimmed: boolean }[] {
 
 function PathBreadcrumb({ path }: { path: string }) {
   return (
-    <div className="flex items-center gap-0.5 flex-wrap min-w-0">
+    <div className="flex items-center gap-0.5 flex-wrap min-w-0" aria-label="Folder Path">
       {parseSegments(path).map((seg, i) => (
         <span key={i} className="flex items-center gap-0.5 min-w-0">
-          {i > 0 && <ChevronRight className="w-2.5 h-2.5 text-white/18 shrink-0" />}
+          {i > 0 && <ChevronRight className="w-3 h-3 text-foreground/40 dark:text-white/35 shrink-0" aria-hidden="true" />}
           <span
             className={clsx(
-              "text-[11px] leading-none truncate",
-              seg.dimmed ? "text-foreground/40 dark:text-white/28" : "text-foreground/80 dark:text-white/80"
+              "text-[14px] leading-none truncate",
+              seg.dimmed ? "text-foreground/60 dark:text-white/50" : "text-foreground dark:text-white/90 font-semibold"
             )}
           >
             {seg.label}
@@ -72,7 +72,6 @@ export function FolderCard({
     const item = e.dataTransfer.items?.[0];
     if (item?.kind === "file") {
       const f = item.getAsFile();
-      // Electron adds 'path' to the File object
       const realPath = (f as any)?.path;
       if (realPath) {
         onPathChange(realPath);
@@ -80,34 +79,49 @@ export function FolderCard({
     }
   };
 
+  const handleEmptyKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSelect();
+    }
+  };
+
   const accent = {
-    blue: { badge: "bg-[#0A84FF]/15 text-[#0A84FF]", glow: "from-[#0A84FF]/[0.04]" },
-    emerald: { badge: "bg-emerald-500/15 text-emerald-400", glow: "from-emerald-500/[0.04]" },
-  }[accentColor];
+    blue: { badge: "bg-[var(--system-blue)]/20 text-[var(--system-blue)]", glow: "from-[var(--system-blue)]/[0.08]" },
+    emerald: { badge: "bg-[var(--system-green)]/20 text-[var(--system-green)]", glow: "from-[var(--system-green)]/[0.08]" },
+    purple: { badge: "bg-[var(--system-purple)]/20 text-[var(--system-purple)]", glow: "from-[var(--system-purple)]/[0.08]" }
+  }[accentColor as "blue" | "emerald" | "purple"] || { badge: "", glow: "" };
 
   // ── Empty / Drop-zone ────────────────────────────────────────────────────
   if (isEmpty) {
     return (
       <div
+        role="button"
+        tabIndex={0}
+        aria-label={`Select ${label} Folder`}
+        onKeyDown={handleEmptyKeyDown}
         className={clsx(
-          "relative rounded-xl flex flex-col items-center justify-center gap-3 text-center transition-all duration-300 cursor-pointer group min-h-[130px] p-8",
+          "relative rounded-xl flex flex-col items-center justify-center gap-3 text-center transition-all duration-300 group min-h-[130px] p-8",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--mac-focus-ring)] focus-visible:border-transparent",
           isDragOver
-            ? "bg-[#0A84FF]/10 dark:bg-[#0A84FF]/[0.05] border-[0.5px] border-dashed border-[#0A84FF]/50 dark:border-[#0A84FF]/[0.45]"
-            : "bg-black/[0.02] dark:bg-white/[0.04] border-[0.5px] border-dashed border-black/10 dark:border-white/[0.18]"
+            ? "bg-[var(--system-blue)]/10 dark:bg-[var(--system-blue)]/[0.05] border-[1px] border-[var(--system-blue)]/60 dark:border-[var(--system-blue)]/[0.55]"
+            : "bg-black/[0.03] dark:bg-white/[0.06] border-[0.5px] border-black/10 dark:border-white/20 hover:bg-black/[0.06] dark:hover:bg-white/[0.08]"
         )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={onSelect}
+        style={{ fontFamily: "var(--font-sf)" }}
       >
         {/* Icon */}
         <div
           className={clsx(
             "w-14 h-14 rounded-[11px] flex items-center justify-center transition-all duration-300",
             isDragOver
-              ? "bg-[#0A84FF]/20 text-[#0A84FF] scale-110"
-              : "bg-black/5 dark:bg-white/[0.06] text-foreground/40 dark:text-white/22 group-hover:bg-black/10 dark:group-hover:bg-white/[0.09] group-hover:text-foreground/60 dark:group-hover:text-white/38"
+              ? "bg-[var(--system-blue)]/20 text-[var(--system-blue)] dark:text-[var(--system-blue)] scale-110"
+              : "bg-black/10 dark:bg-white/[0.1] text-foreground/60 dark:text-white/50 group-hover:bg-black/15 dark:group-hover:bg-white/[0.15] group-hover:text-foreground/80 dark:group-hover:text-white/70"
           )}
+          aria-hidden="true"
         >
           {isDragOver ? <Upload className="w-7 h-7" /> : <FolderOpen className="w-7 h-7" />}
         </div>
@@ -115,30 +129,29 @@ export function FolderCard({
         {/* Copy */}
         <div className="space-y-1">
           <p className={clsx(
-            "text-[11px] tracking-[0.05em] uppercase transition-colors",
-            isDragOver ? "text-[#58ADFF]" : "text-[#8E8E93]"
+            "text-[11px] font-semibold transition-colors",
+            isDragOver ? "text-[var(--system-blue)] dark:text-[var(--system-blue)]" : "text-foreground/70 dark:text-white/60"
           )}>
             {label}
           </p>
           <p className={clsx(
-            "text-[12px] transition-colors",
-            isDragOver ? "text-[#0A84FF] dark:text-[#58ADFF]/75" : "text-foreground/40 dark:text-white/28 group-hover:text-foreground/60 dark:group-hover:text-white/40"
+            "text-[14px] transition-colors font-medium",
+            isDragOver ? "text-[var(--system-blue)] dark:text-[var(--system-blue)]" : "text-foreground/70 dark:text-white/60 group-hover:text-foreground/80 dark:group-hover:text-white/80"
           )}>
             {isDragOver ? "Release to set path" : `Drag ${label} Folder Here`}
           </p>
         </div>
 
-        {/* Browse button */}
-        <button
-          type="button"
-          onClick={(e) => { e.stopPropagation(); onSelect(); }}
+        {/* Browse styling (visually looks like a button but it's part of the parent button) */}
+        <div
           className={clsx(
-            "px-4 py-1.5 text-[11px] rounded-[8px] transition-all text-foreground/70 dark:text-white/70 hover:text-foreground/90 dark:hover:text-white/90 bg-black/5 dark:bg-white/[0.08] border-[0.5px] border-black/10 dark:border-white/10",
+            "px-4 py-1.5 text-[13px] font-medium rounded-[8px] transition-all text-foreground/80 dark:text-white/80 bg-black/5 dark:bg-white/[0.1] border-[1px] border-black/20 dark:border-white/20 group-hover:bg-black/10 dark:group-hover:bg-white/[0.15]",
             isDragOver && "opacity-0 pointer-events-none"
           )}
+          aria-hidden="true"
         >
           Browse…
-        </button>
+        </div>
       </div>
     );
   }
@@ -147,13 +160,14 @@ export function FolderCard({
   return (
     <div
       className={clsx("rounded-xl overflow-hidden group transition-colors duration-200 relative", isDragOver ? DRAG_CLS : GLASS_CLS)}
+      style={{ fontFamily: "var(--font-sf)" }}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
       <div className="flex items-center gap-3.5 p-4">
         {/* Icon badge */}
-        <div className={clsx("w-10 h-10 rounded-[8px] flex items-center justify-center shrink-0 transition-all", accent.badge)}>
+        <div className={clsx("w-10 h-10 rounded-[8px] flex items-center justify-center shrink-0 transition-all", accent.badge)} aria-hidden="true">
           {accentColor === "blue"
             ? <FolderOpen className="w-5 h-5" />
             : <Folder className="w-5 h-5" />}
@@ -161,44 +175,48 @@ export function FolderCard({
 
         {/* Text */}
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] tracking-[0.07em] uppercase text-[#8E8E93] mb-1.5 select-none">{label}</p>
+          <p className="text-[11px] font-semibold text-foreground/50 dark:text-white/45 mb-2 select-none" id={`label-${label}`}>{label}</p>
           {isEditing ? (
             <input
               ref={inputRef}
               type="text"
+              aria-labelledby={`label-${label}`}
               value={path}
               onChange={(e) => onPathChange(e.target.value)}
               onBlur={() => setIsEditing(false)}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === "Escape") setIsEditing(false); }}
-              className="w-full rounded-md px-2 py-1 text-[12px] text-foreground dark:text-white/90 focus:outline-none font-mono bg-black/5 dark:bg-white/[0.06] border-[0.5px] border-black/10 dark:border-white/[0.15]"
+              className="w-full rounded-md px-2 py-1 text-[14px] text-foreground dark:text-white/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--mac-focus-ring)] font-mono bg-black/5 dark:bg-white/[0.1] border-[1px] border-black/20 dark:border-white/30"
             />
           ) : (
             <button
               type="button"
-              className="group/path flex items-center gap-2 w-full text-left"
+              className="group/path flex items-center gap-2 w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--mac-focus-ring)] rounded-md px-1 -mx-1 py-1"
               onClick={() => setIsEditing(true)}
+              aria-label={`Edit ${label} path`}
               title="Click to edit path"
             >
               <PathBreadcrumb path={path} />
-              <Pencil className="w-2.5 h-2.5 text-foreground/40 dark:text-white/20 opacity-0 group-hover/path:opacity-100 transition-opacity shrink-0" />
+              <Pencil className="w-3.5 h-3.5 text-foreground/60 dark:text-white/50 opacity-0 group-hover/path:opacity-100 transition-opacity shrink-0 focus-visible:opacity-100" aria-hidden="true" />
             </button>
           )}
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-1 shrink-0 ml-1">
+        <div className="flex items-center gap-1 shrink-0 ml-1 relative z-10">
           <button
             type="button"
             onClick={() => onPathChange("")}
+            aria-label={`Clear ${label} path`}
             title="Clear"
-            className="w-6 h-6 flex items-center justify-center rounded-md text-foreground/40 dark:text-white/20 hover:text-foreground/70 dark:hover:text-white/55 hover:bg-black/5 dark:hover:bg-white/[0.07] transition-all"
+            className="w-8 h-8 flex items-center justify-center rounded-md text-foreground/60 dark:text-white/60 hover:text-foreground/90 dark:hover:text-white/90 hover:bg-black/10 dark:hover:bg-white/[0.15] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--mac-focus-ring)]"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-4 h-4" aria-hidden="true" />
           </button>
           <button
             type="button"
             onClick={onSelect}
-            className="px-3 py-1.5 text-foreground/70 dark:text-white/70 hover:text-foreground dark:hover:text-white/90 text-[11px] rounded-[8px] transition-all bg-black/5 dark:bg-white/[0.08] border-[0.5px] border-black/10 dark:border-white/10"
+            aria-label={`Select new ${label} path`}
+            className="px-3.5 py-1.5 font-semibold text-[var(--system-blue)] hover:bg-[var(--system-blue)]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--mac-focus-ring)] text-[13px] rounded-[8px] transition-all bg-transparent border-[0.5px] border-transparent"
           >
             Select
           </button>

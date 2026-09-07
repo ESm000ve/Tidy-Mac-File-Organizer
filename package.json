@@ -1,27 +1,62 @@
 {
-  "name": "file-organizer",
+  "name": "tidy",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build && electron-builder",
-    "preview": "vite preview"
+    "build:mac": "vite build && electron-builder --mac --arm64 -c.directories.output=dist/arm64 && electron-builder --mac --x64 -c.directories.output=dist/x64",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "node scripts/smoke-test.mjs"
   },
   "build": {
     "appId": "com.ericauzenne.tidy",
     "productName": "Tidy",
+    "directories": {
+      "output": "dist"
+    },
     "files": [
       "dist/**/*",
       "dist-electron/**/*"
     ],
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
     "mac": {
-      "target": "dmg",
-      "icon": "build/icon.png"
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "build/icon.png",
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
+      "darkModeSupport": true,
+      "minimumSystemVersion": "11.0.0"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
     }
   },
   "dependencies": {
+    "@bradleyhodges/sfsymbols": "^7.0.4",
+    "@bradleyhodges/sfsymbols-react": "^7.0.4",
+    "@bradleyhodges/sfsymbols-types": "^7.0.4",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@google/genai": "^1.43.0",
@@ -66,9 +101,11 @@
     "motion": "12.23.24",
     "next-themes": "0.4.6",
     "node-schedule": "^2.1.1",
+    "react": "18.3.1",
     "react-day-picker": "8.10.1",
     "react-dnd": "16.0.1",
     "react-dnd-html5-backend": "16.0.1",
+    "react-dom": "18.3.1",
     "react-hook-form": "7.55.0",
     "react-popper": "2.3.0",
     "react-resizable-panels": "2.1.7",
@@ -97,22 +134,5 @@
     "vite": "6.3.5",
     "vite-plugin-electron": "^0.29.0",
     "vite-plugin-electron-renderer": "^0.14.6"
-  },
-  "peerDependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
-    },
-    "react-dom": {
-      "optional": true
-    }
-  },
-  "pnpm": {
-    "overrides": {
-      "vite": "6.3.5"
-    }
   }
 }
