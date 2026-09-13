@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import type { Preview } from '@storybook/react-vite';
 import { MotionConfig } from 'motion/react';
-import '../src/styles/fonts.css';
-import '../src/styles/tailwind.css';
-import '../src/styles/theme.css';
-import '../src/styles/accessibility.css';
+import '../src/styles/index.css';
 import '../design-system/tokens.css';
 import '../design-system/system.css';
 function Theme({ children, theme, motion }: { children: React.ReactNode; theme: string; motion: string }) {
