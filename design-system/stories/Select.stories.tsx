@@ -1,0 +1,14 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Select } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/Select', component: Select, tags: ['autodocs'], parameters: { docs: { description: { component: "Use for mutually exclusive policies. Keep skip as the conservative starting policy; explain overwrite at the decision point.\n\n### Accessibility\nNative select supports keyboard navigation and platform selection behavior. Label and error description are programmatically linked.\n\n### Implementation status\nProposed native control. Open is an expanded native list specimen, not a simulation of a macOS popup. Compare current Radix MacSelect under In the app.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"state": "default"} } satisfies Meta<typeof Select>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Default: Story = { args: {"state": "default"} };
+export const Hover: Story = { args: {"state": "hover"} };
+export const Focus: Story = { args: {"state": "focus"} };
+export const Open: Story = { args: {"state": "open"} };
+export const Error: Story = { args: {"state": "error"} };
+export const Disabled: Story = { args: {"state": "disabled"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="default"><Select {...{"state": "default"}} /></Specimen><Specimen key="1" label="hover"><Select {...{"state": "hover"}} /></Specimen><Specimen key="2" label="focus"><Select {...{"state": "focus"}} /></Specimen><Specimen key="3" label="open"><Select {...{"state": "open"}} /></Specimen><Specimen key="4" label="error"><Select {...{"state": "error"}} /></Specimen><Specimen key="5" label="disabled"><Select {...{"state": "disabled"}} /></Specimen></div> };

@@ -1,0 +1,18 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { FolderCard } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/FolderCard', component: FolderCard, tags: ['autodocs'], parameters: { docs: { description: { component: "Separate origin from destination. Expose readable paths and a recovery action when a location becomes unavailable.\n\n### Accessibility\nEditing uses a named input. Enter or Escape exits editing. This demo saves only local component state and does not access the filesystem.\n\n### Implementation status\nProposed system composition. Drag is a visual specimen; native path capture remains an Electron capability. Live current FolderCard examples are under In the app.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"role": "source", "state": "empty"} } satisfies Meta<typeof FolderCard>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const SourceEmpty: Story = { args: {"role": "source", "state": "empty"} };
+export const SourceFilled: Story = { args: {"role": "source", "state": "filled"} };
+export const SourceDrag: Story = { args: {"role": "source", "state": "drag"} };
+export const SourceEditing: Story = { args: {"role": "source", "state": "editing"} };
+export const SourceError: Story = { args: {"role": "source", "state": "error"} };
+export const DestinationEmpty: Story = { args: {"role": "destination", "state": "empty"} };
+export const DestinationFilled: Story = { args: {"role": "destination", "state": "filled"} };
+export const DestinationDrag: Story = { args: {"role": "destination", "state": "drag"} };
+export const DestinationEditing: Story = { args: {"role": "destination", "state": "editing"} };
+export const DestinationError: Story = { args: {"role": "destination", "state": "error"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="source / empty"><FolderCard {...{"role": "source", "state": "empty"}} /></Specimen><Specimen key="1" label="source / filled"><FolderCard {...{"role": "source", "state": "filled"}} /></Specimen><Specimen key="2" label="source / drag"><FolderCard {...{"role": "source", "state": "drag"}} /></Specimen><Specimen key="3" label="source / editing"><FolderCard {...{"role": "source", "state": "editing"}} /></Specimen><Specimen key="4" label="source / error"><FolderCard {...{"role": "source", "state": "error"}} /></Specimen><Specimen key="5" label="destination / empty"><FolderCard {...{"role": "destination", "state": "empty"}} /></Specimen><Specimen key="6" label="destination / filled"><FolderCard {...{"role": "destination", "state": "filled"}} /></Specimen><Specimen key="7" label="destination / drag"><FolderCard {...{"role": "destination", "state": "drag"}} /></Specimen><Specimen key="8" label="destination / editing"><FolderCard {...{"role": "destination", "state": "editing"}} /></Specimen><Specimen key="9" label="destination / error"><FolderCard {...{"role": "destination", "state": "error"}} /></Specimen></div> };

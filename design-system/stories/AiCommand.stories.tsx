@@ -1,0 +1,14 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { AiCommand } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/AiCommand', component: AiCommand, tags: ['autodocs'], parameters: { docs: { description: { component: "AI changes rules, not files. Successful rule generation explicitly states that no files have moved. Preserve manual controls when AI is unavailable.\n\n### Accessibility\nTextarea has a visible label. Feedback uses a polite status region. Processing prevents duplicate submission. Manual screen-reader review remains necessary.\n\n### Implementation status\nProposed copy refinement from current Done! wording. The submit action is a deterministic demonstration and makes no model API request.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"state": "empty"} } satisfies Meta<typeof AiCommand>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Empty: Story = { args: {"state": "empty"} };
+export const Entered: Story = { args: {"state": "entered"} };
+export const Processing: Story = { args: {"state": "processing"} };
+export const Success: Story = { args: {"state": "success"} };
+export const Error: Story = { args: {"state": "error"} };
+export const Unavailable: Story = { args: {"state": "unavailable"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="empty"><AiCommand {...{"state": "empty"}} /></Specimen><Specimen key="1" label="entered"><AiCommand {...{"state": "entered"}} /></Specimen><Specimen key="2" label="processing"><AiCommand {...{"state": "processing"}} /></Specimen><Specimen key="3" label="success"><AiCommand {...{"state": "success"}} /></Specimen><Specimen key="4" label="error"><AiCommand {...{"state": "error"}} /></Specimen><Specimen key="5" label="unavailable"><AiCommand {...{"state": "unavailable"}} /></Specimen></div> };

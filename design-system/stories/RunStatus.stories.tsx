@@ -1,0 +1,13 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { RunStatus } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/RunStatus', component: RunStatus, tags: ['autodocs'], parameters: { docs: { description: { component: "Distinguish scanning from applying changes. Completion reports results, including partial failures, rather than a single ambiguous success signal.\n\n### Accessibility\nProgress is named and exposes numeric completion. Text status announces state. Reduced motion preserves the same meaning.\n\n### Implementation status\nProposed extraction of StatusBar semantics. Counts are demonstration data; no performance or outcome metrics are claimed.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"state": "idle"} } satisfies Meta<typeof RunStatus>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Idle: Story = { args: {"state": "idle"} };
+export const Scanning: Story = { args: {"state": "scanning"} };
+export const Running: Story = { args: {"state": "running"} };
+export const Completed: Story = { args: {"state": "completed"} };
+export const Error: Story = { args: {"state": "error"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="idle"><RunStatus {...{"state": "idle"}} /></Specimen><Specimen key="1" label="scanning"><RunStatus {...{"state": "scanning"}} /></Specimen><Specimen key="2" label="running"><RunStatus {...{"state": "running"}} /></Specimen><Specimen key="3" label="completed"><RunStatus {...{"state": "completed"}} /></Specimen><Specimen key="4" label="error"><RunStatus {...{"state": "error"}} /></Specimen></div> };

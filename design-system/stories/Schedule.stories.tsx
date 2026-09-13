@@ -1,0 +1,12 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Schedule } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/Schedule', component: Schedule, tags: ['autodocs'], parameters: { docs: { description: { component: "Make unattended behavior explicit. Scheduled runs skip preview and require the application to remain open. Weekly is Monday; monthly is day one.\n\n### Accessibility\nEach control has a visible name. Warning text remains present when scheduling is selected. Time uses a native input.\n\n### Implementation status\nSource-derived scheduling contract. This specimen does not persist or start a schedule. The existing date UI does not determine the cron expression.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"frequency": "manual"} } satisfies Meta<typeof Schedule>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Manual: Story = { args: {"frequency": "manual"} };
+export const Daily: Story = { args: {"frequency": "daily"} };
+export const Weekly: Story = { args: {"frequency": "weekly"} };
+export const Monthly: Story = { args: {"frequency": "monthly"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="manual"><Schedule {...{"frequency": "manual"}} /></Specimen><Specimen key="1" label="daily"><Schedule {...{"frequency": "daily"}} /></Specimen><Specimen key="2" label="weekly"><Schedule {...{"frequency": "weekly"}} /></Specimen><Specimen key="3" label="monthly"><Schedule {...{"frequency": "monthly"}} /></Specimen></div> };

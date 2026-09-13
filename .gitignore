@@ -44,3 +44,9 @@ build
 # Debug / dev artifacts
 build_output*.txt
 test-browser.mjs
+
+# Storybook
+storybook-static
+coverage
+test-results
+playwright-report

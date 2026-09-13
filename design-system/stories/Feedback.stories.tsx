@@ -1,0 +1,13 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Feedback } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/Feedback', component: Feedback, tags: ['autodocs'], parameters: { docs: { description: { component: "Explain what happened and what to do next. Success messages describe the actual completed scope; failures preserve a clear route to recovery.\n\n### Accessibility\nErrors use role=alert, other messages role=status. Avoid mounting repeated alert copies in a live workflow.\n\n### Implementation status\nProposed shared feedback container. Automated checks do not establish that real announcements are well-timed.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"tone": "information"} } satisfies Meta<typeof Feedback>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Information: Story = { args: {"tone": "information"} };
+export const Success: Story = { args: {"tone": "success"} };
+export const Warning: Story = { args: {"tone": "warning"} };
+export const Error: Story = { args: {"tone": "error"} };
+export const Empty: Story = { args: {"tone": "empty"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="information"><Feedback {...{"tone": "information"}} /></Specimen><Specimen key="1" label="success"><Feedback {...{"tone": "success"}} /></Specimen><Specimen key="2" label="warning"><Feedback {...{"tone": "warning"}} /></Specimen><Specimen key="3" label="error"><Feedback {...{"tone": "error"}} /></Specimen><Specimen key="4" label="empty"><Feedback {...{"tone": "empty"}} /></Specimen></div> };

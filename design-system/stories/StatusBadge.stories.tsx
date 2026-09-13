@@ -1,0 +1,14 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StatusBadge } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/StatusBadge', component: StatusBadge, tags: ['autodocs'], parameters: { docs: { description: { component: "Use concise text with a symbol to make status legible. Purple identifies AI involvement and does not imply confidence or success.\n\n### Accessibility\nBadge text carries meaning independently of color. Parent live regions announce changes only when needed. Decorative icons are hidden.\n\n### Implementation status\nProposed common status vocabulary for the app. A badge is not an interactive control.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"tone": "neutral"} } satisfies Meta<typeof StatusBadge>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Neutral: Story = { args: {"tone": "neutral"} };
+export const Information: Story = { args: {"tone": "information"} };
+export const Success: Story = { args: {"tone": "success"} };
+export const Warning: Story = { args: {"tone": "warning"} };
+export const Error: Story = { args: {"tone": "error"} };
+export const Ai: Story = { args: {"tone": "ai"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="neutral"><StatusBadge {...{"tone": "neutral"}} /></Specimen><Specimen key="1" label="information"><StatusBadge {...{"tone": "information"}} /></Specimen><Specimen key="2" label="success"><StatusBadge {...{"tone": "success"}} /></Specimen><Specimen key="3" label="warning"><StatusBadge {...{"tone": "warning"}} /></Specimen><Specimen key="4" label="error"><StatusBadge {...{"tone": "error"}} /></Specimen><Specimen key="5" label="ai"><StatusBadge {...{"tone": "ai"}} /></Specimen></div> };

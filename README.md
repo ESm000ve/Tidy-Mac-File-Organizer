@@ -1,3 +1,11 @@
+# Tidy design system
+
+[Open the interactive Storybook](https://esm000ve.github.io/Tidy-Mac-File-Organizer/) · [Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9)
+
+Foundations, 15 component families, 120 named variants, interactive workflows, accessibility notes and a portfolio walkthrough. See [design-system/README.md](design-system/README.md) for local development and implementation status.
+
+---
+
 # Tidy — File Organizer
 
 ## Features
