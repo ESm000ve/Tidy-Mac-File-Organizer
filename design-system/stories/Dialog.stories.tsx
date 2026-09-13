@@ -1,0 +1,11 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Dialog } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/Dialog', component: Dialog, tags: ['autodocs'], parameters: { docs: { description: { component: "Interrupt only for an actionable decision. Put the consequence in the message and use a specific action label. Focus starts on the safe action.\n\n### Accessibility\nNative modal dialog traps focus and supports Escape. It has a title and description. Closing should return focus to its trigger.\n\n### Implementation status\nProposed reusable modal API. Destructive example demonstrates an overwrite decision and never performs filesystem operations.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"kind": "notice"} } satisfies Meta<typeof Dialog>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Notice: Story = { args: {"kind": "notice"} };
+export const Confirm: Story = { args: {"kind": "confirm"} };
+export const Destructive: Story = { args: {"kind": "destructive"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="notice"><Dialog {...{"kind": "notice"}} /></Specimen><Specimen key="1" label="confirm"><Dialog {...{"kind": "confirm"}} /></Specimen><Specimen key="2" label="destructive"><Dialog {...{"kind": "destructive"}} /></Specimen></div> };

@@ -1,0 +1,16 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { ExtensionChip } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/ExtensionChip', component: ExtensionChip, tags: ['autodocs'], parameters: { docs: { description: { component: "Multi-select file types within a category. Preserve the extension label and make inclusion visible without relying on color.\n\n### Accessibility\naria-pressed exposes inclusion; a checkmark provides another visual cue. Native button keyboard behavior applies.\n\n### Implementation status\nProposed extraction of chips in CategoryRuleCard. Do not confuse an unselected chip with a disabled one.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"selected": true, "state": "default"} } satisfies Meta<typeof ExtensionChip>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const TrueDefault: Story = { args: {"selected": true, "state": "default"} };
+export const TrueHover: Story = { args: {"selected": true, "state": "hover"} };
+export const TrueFocus: Story = { args: {"selected": true, "state": "focus"} };
+export const TrueDisabled: Story = { args: {"selected": true, "state": "disabled"} };
+export const FalseDefault: Story = { args: {"selected": false, "state": "default"} };
+export const FalseHover: Story = { args: {"selected": false, "state": "hover"} };
+export const FalseFocus: Story = { args: {"selected": false, "state": "focus"} };
+export const FalseDisabled: Story = { args: {"selected": false, "state": "disabled"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="True / default"><ExtensionChip {...{"selected": true, "state": "default"}} /></Specimen><Specimen key="1" label="True / hover"><ExtensionChip {...{"selected": true, "state": "hover"}} /></Specimen><Specimen key="2" label="True / focus"><ExtensionChip {...{"selected": true, "state": "focus"}} /></Specimen><Specimen key="3" label="True / disabled"><ExtensionChip {...{"selected": true, "state": "disabled"}} /></Specimen><Specimen key="4" label="False / default"><ExtensionChip {...{"selected": false, "state": "default"}} /></Specimen><Specimen key="5" label="False / hover"><ExtensionChip {...{"selected": false, "state": "hover"}} /></Specimen><Specimen key="6" label="False / focus"><ExtensionChip {...{"selected": false, "state": "focus"}} /></Specimen><Specimen key="7" label="False / disabled"><ExtensionChip {...{"selected": false, "state": "disabled"}} /></Specimen></div> };

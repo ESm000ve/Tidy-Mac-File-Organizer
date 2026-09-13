@@ -1,0 +1,4 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwind from '@tailwindcss/vite';
+export default defineConfig({ base: './', plugins: [react(), tailwind()], resolve: { dedupe: ['react', 'react-dom'] }, optimizeDeps: { include: ['react/jsx-dev-runtime', 'react/jsx-runtime', 'react', 'react-dom/client'] } });

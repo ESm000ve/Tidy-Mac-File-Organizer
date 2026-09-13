@@ -1,0 +1,160 @@
+/* Generated from figma-tokens.json. Run npm run tokens:build. */
+:root {
+  --tidy-white: #ffffff;
+  --tidy-black: #000000;
+  --tidy-gray-50: #f3f3f5;
+  --tidy-gray-100: #ececec;
+  --tidy-gray-200: #e5e5ea;
+  --tidy-gray-400: #b0b0b8;
+  --tidy-gray-500: #696979;
+  --tidy-gray-600: #555560;
+  --tidy-gray-700: #3a3a3c;
+  --tidy-gray-800: #2c2c2e;
+  --tidy-gray-900: #1e1e1e;
+  --tidy-blue-light: #007aff;
+  --tidy-blue-dark: #0a84ff;
+  --tidy-green-light: #34c759;
+  --tidy-green-dark: #32d74b;
+  --tidy-red-light: #ff3b30;
+  --tidy-red-dark: #ff453a;
+  --tidy-orange-light: #ff9500;
+  --tidy-orange-dark: #ff9f0a;
+  --tidy-yellow-light: #ffcc00;
+  --tidy-yellow-dark: #ffd60a;
+  --tidy-purple-light: #af52de;
+  --tidy-purple-dark: #bf5af2;
+  --tidy-blue-ink: #0056b3;
+  --tidy-blue-pale: #73b7ff;
+  --tidy-green-ink: #197339;
+  --tidy-green-pale: #78e394;
+  --tidy-red-ink: #b42318;
+  --tidy-red-pale: #ff9a93;
+  --tidy-purple-ink: #7834a7;
+  --tidy-purple-pale: #dca6f7;
+  --tidy-orange-ink: #8a4b00;
+  --tidy-orange-pale: #ffca80;
+}
+
+:root {
+  --tidy-space-0: 0px;
+  --tidy-space-2: 2px;
+  --tidy-space-4: 4px;
+  --tidy-space-6: 6px;
+  --tidy-space-8: 8px;
+  --tidy-space-10: 10px;
+  --tidy-space-12: 12px;
+  --tidy-space-14: 14px;
+  --tidy-space-16: 16px;
+  --tidy-space-20: 20px;
+  --tidy-space-24: 24px;
+  --tidy-space-32: 32px;
+  --tidy-space-40: 40px;
+  --tidy-space-48: 48px;
+  --tidy-space-64: 64px;
+  --tidy-space-80: 80px;
+  --tidy-radius-0: 0px;
+  --tidy-radius-4: 4px;
+  --tidy-radius-6: 6px;
+  --tidy-radius-8: 8px;
+  --tidy-radius-10: 10px;
+  --tidy-radius-12: 12px;
+  --tidy-radius-16: 16px;
+  --tidy-radius-24: 24px;
+  --tidy-radius-999: 999px;
+  --tidy-size-14: 14px;
+  --tidy-size-16: 16px;
+  --tidy-size-18: 18px;
+  --tidy-size-20: 20px;
+  --tidy-size-24: 24px;
+  --tidy-size-28: 28px;
+  --tidy-size-32: 32px;
+  --tidy-size-36: 36px;
+  --tidy-size-40: 40px;
+  --tidy-size-42: 42px;
+  --tidy-size-44: 44px;
+  --tidy-size-48: 48px;
+  --tidy-size-52: 52px;
+  --tidy-size-56: 56px;
+  --tidy-stroke-0-5: 0.5px;
+  --tidy-stroke-1: 1px;
+  --tidy-stroke-2: 2px;
+  --tidy-stroke-3: 3px;
+}
+
+:root {
+  --tidy-bg-window: var(--tidy-gray-100);
+  --tidy-bg-surface: var(--tidy-white);
+  --tidy-bg-inset: var(--tidy-gray-50);
+  --tidy-bg-hover: var(--tidy-gray-200);
+  --tidy-bg-disabled: var(--tidy-gray-200);
+  --tidy-text-primary: var(--tidy-black);
+  --tidy-text-secondary: var(--tidy-gray-600);
+  --tidy-text-disabled: var(--tidy-gray-500);
+  --tidy-text-on-accent: var(--tidy-white);
+  --tidy-border-default: var(--tidy-gray-500);
+  --tidy-border-subtle: var(--tidy-gray-200);
+  --tidy-action-primary: var(--tidy-blue-ink);
+  --tidy-action-hover: #004a99;
+  --tidy-action-pressed: var(--tidy-blue-ink);
+  --tidy-accent-blue: var(--tidy-blue-light);
+  --tidy-accent-green: var(--tidy-green-light);
+  --tidy-accent-red: var(--tidy-red-light);
+  --tidy-accent-purple: var(--tidy-purple-light);
+  --tidy-accent-orange: var(--tidy-orange-light);
+  --tidy-accent-yellow: var(--tidy-yellow-light);
+  --tidy-text-link: var(--tidy-blue-ink);
+  --tidy-text-success: var(--tidy-green-ink);
+  --tidy-text-error: var(--tidy-red-ink);
+  --tidy-text-ai: var(--tidy-purple-ink);
+  --tidy-text-warning: var(--tidy-orange-ink);
+  --tidy-focus-ring: var(--tidy-blue-ink);
+  --tidy-toggle-off: var(--tidy-gray-200);
+  --tidy-toggle-thumb: var(--tidy-white);
+  --tidy-action-destructive: var(--tidy-red-ink);
+}
+
+.dark {
+  --tidy-bg-window: var(--tidy-gray-900);
+  --tidy-bg-surface: var(--tidy-gray-800);
+  --tidy-bg-inset: var(--tidy-gray-700);
+  --tidy-bg-hover: var(--tidy-gray-600);
+  --tidy-bg-disabled: var(--tidy-gray-700);
+  --tidy-text-primary: var(--tidy-white);
+  --tidy-text-secondary: var(--tidy-gray-400);
+  --tidy-text-disabled: var(--tidy-gray-400);
+  --tidy-text-on-accent: var(--tidy-white);
+  --tidy-border-default: var(--tidy-gray-400);
+  --tidy-border-subtle: var(--tidy-gray-700);
+  --tidy-action-primary: var(--tidy-blue-ink);
+  --tidy-action-hover: #004a99;
+  --tidy-action-pressed: var(--tidy-blue-ink);
+  --tidy-accent-blue: var(--tidy-blue-dark);
+  --tidy-accent-green: var(--tidy-green-dark);
+  --tidy-accent-red: var(--tidy-red-dark);
+  --tidy-accent-purple: var(--tidy-purple-dark);
+  --tidy-accent-orange: var(--tidy-orange-dark);
+  --tidy-accent-yellow: var(--tidy-yellow-dark);
+  --tidy-text-link: var(--tidy-blue-pale);
+  --tidy-text-success: var(--tidy-green-pale);
+  --tidy-text-error: var(--tidy-red-pale);
+  --tidy-text-ai: var(--tidy-purple-pale);
+  --tidy-text-warning: var(--tidy-orange-pale);
+  --tidy-focus-ring: var(--tidy-blue-pale);
+  --tidy-toggle-off: var(--tidy-gray-700);
+  --tidy-toggle-thumb: var(--tidy-white);
+  --tidy-action-destructive: var(--tidy-red-ink);
+}
+
+:root {
+  --tidy-duration-feedback: 150ms;
+  --tidy-duration-control: 200ms;
+  --tidy-duration-panel: 300ms;
+}
+
+[data-motion="reduced"] {
+  --tidy-duration-feedback: 0ms;
+  --tidy-duration-control: 0ms;
+  --tidy-duration-panel: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) { :root { --tidy-duration-feedback: 0ms; --tidy-duration-control: 0ms; --tidy-duration-panel: 0ms; } }

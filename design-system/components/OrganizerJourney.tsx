@@ -1,0 +1,14 @@
+import React, { useState } from 'react';
+import { Button, FolderCard, RuleCard, AiCommand, PreviewRow, Feedback, RunStatus } from './index';
+type Step = 'configure' | 'preview' | 'running' | 'complete' | 'error' | 'undone';
+export function OrganizerJourney({ initial = 'configure' }: { initial?: Step }) {
+  const [step, setStep] = useState<Step>(initial);
+  return <div className="tidy-window"><header className="tidy-window-header"><strong>Tidy</strong><span className="tidy-caption">Interactive demonstration · local state only</span></header><div className="tidy-window-body">
+    {step === 'configure' && <><h2>A place for everything.</h2><p className="tidy-muted">Choose locations, define your rules, then review the changes.</p><div className="tidy-grid"><FolderCard /><FolderCard role="destination" /></div><AiCommand /><div className="tidy-grid"><RuleCard /><RuleCard category="Images" /></div><Button onClick={() => setStep('preview')} icon>Run Tidy</Button></>}
+    {step === 'preview' && <><h2>Review before you organize</h2><p>3 files reviewed · 2 changes · 1 duplicate to skip</p><Feedback /><PreviewRow /><PreviewRow action="rename" original="Invoice-September.pdf" /><PreviewRow action="duplicate" original="Receipt.pdf" /><div className="tidy-row"><Button intent="secondary" onClick={() => setStep('configure')}>Back to rules</Button><Button onClick={() => setStep('running')}>Start organizing</Button></div></>}
+    {step === 'running' && <><h2>Organizing your files</h2><RunStatus state="running" /><p className="tidy-muted">In the app, progress comes from completed operations. Choose a demonstration outcome below.</p><div className="tidy-wrap"><Button onClick={() => setStep('complete')}>Show successful result</Button><Button intent="secondary" onClick={() => setStep('error')}>Show partial failure</Button></div></>}
+    {step === 'complete' && <><h2>Your files are organized</h2><RunStatus state="completed" /><PreviewRow completed /><PreviewRow action="rename" original="Invoice-September.pdf" completed /><div className="tidy-wrap"><Button intent="secondary" onClick={() => setStep('undone')}>Undo last run</Button><Button intent="secondary" onClick={() => setStep('configure')}>Back to rules</Button></div><p className="tidy-muted">Undo replays recorded moves. It cannot restore overwritten destination contents.</p></>}
+    {step === 'error' && <><h2>One file needs attention</h2><RunStatus state="error" /><Feedback tone="error" /><PreviewRow action="error" /><Button intent="secondary" onClick={() => setStep('configure')}>Review destination</Button></>}
+    {step === 'undone' && <><h2>Recorded moves reversed</h2><Feedback tone="success">Demonstration only: available recorded moves return to their original locations. Overwritten bytes are not recoverable through undo.</Feedback><Button onClick={() => setStep('configure')}>Back to rules</Button></>}
+  </div></div>;
+}

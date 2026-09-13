@@ -1,0 +1,14 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { TextField } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/TextField', component: TextField, tags: ['autodocs'], parameters: { docs: { description: { component: "Use a persistent label, an example placeholder and specific recovery text. Paths may wrap in summaries but remain editable as a single input.\n\n### Accessibility\nLabel and help text have unique generated IDs. Errors expose aria-invalid and aria-describedby. A placeholder never replaces a label.\n\n### Implementation status\nProposed standalone field extracted conceptually from FolderCard editing. Empty remains a true empty value.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"state": "empty"} } satisfies Meta<typeof TextField>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Empty: Story = { args: {"state": "empty"} };
+export const Filled: Story = { args: {"state": "filled"} };
+export const Hover: Story = { args: {"state": "hover"} };
+export const Focus: Story = { args: {"state": "focus"} };
+export const Error: Story = { args: {"state": "error"} };
+export const Disabled: Story = { args: {"state": "disabled"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="empty"><TextField {...{"state": "empty"}} /></Specimen><Specimen key="1" label="filled"><TextField {...{"state": "filled"}} /></Specimen><Specimen key="2" label="hover"><TextField {...{"state": "hover"}} /></Specimen><Specimen key="3" label="focus"><TextField {...{"state": "focus"}} /></Specimen><Specimen key="4" label="error"><TextField {...{"state": "error"}} /></Specimen><Specimen key="5" label="disabled"><TextField {...{"state": "disabled"}} /></Specimen></div> };

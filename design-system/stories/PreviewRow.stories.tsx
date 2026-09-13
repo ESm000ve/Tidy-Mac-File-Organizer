@@ -1,0 +1,12 @@
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { PreviewRow } from '../components';
+import { Specimen } from './shared';
+const meta = { title: 'Components/PreviewRow', component: PreviewRow, tags: ['autodocs'], parameters: { docs: { description: { component: "Make each proposed operation inspectable: original name, destination and action. Differentiate a suggested rename from a completed rename.\n\n### Accessibility\nText labels explain each action; arrows and symbols are decorative. Long paths must remain understandable.\n\n### Implementation status\nProposed extraction from PreviewSheet. Do not show completed=true before an actual operation succeeds.\n\n### Design reference\n[Figma system](https://www.figma.com/design/F4cJIG7cCiURqp30nqszk9). Use the toolbar to review Light/Dark and Standard/Reduced motion. Automated checks are supplemented by documented manual checks." } } }, args: {"action": "move"} } satisfies Meta<typeof PreviewRow>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+export const Move: Story = { args: {"action": "move"} };
+export const Rename: Story = { args: {"action": "rename"} };
+export const Duplicate: Story = { args: {"action": "duplicate"} };
+export const Error: Story = { args: {"action": "error"} };
+export const StateMatrix: Story = { render: () => <div className="tidy-grid"><Specimen key="0" label="move"><PreviewRow {...{"action": "move"}} /></Specimen><Specimen key="1" label="rename"><PreviewRow {...{"action": "rename"}} /></Specimen><Specimen key="2" label="duplicate"><PreviewRow {...{"action": "duplicate"}} /></Specimen><Specimen key="3" label="error"><PreviewRow {...{"action": "error"}} /></Specimen></div> };

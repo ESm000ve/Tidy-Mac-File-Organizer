@@ -10,7 +10,12 @@
     "build:mac": "vite build && electron-builder --mac --arm64 -c.directories.output=dist/arm64 && electron-builder --mac --x64 -c.directories.output=dist/x64",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "test": "node scripts/smoke-test.mjs"
+    "test": "node scripts/smoke-test.mjs",
+    "storybook": "storybook dev -p 6006 --no-open",
+    "tokens:build": "node scripts/build-design-tokens.mjs",
+    "build-storybook": "npm run tokens:build && storybook build",
+    "test-storybook": "vitest run",
+    "typecheck:storybook": "tsc --noEmit -p tsconfig.storybook.json"
   },
   "build": {
     "appId": "com.ericauzenne.tidy",
@@ -120,19 +125,27 @@
     "vaul": "1.1.2"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/addon-vitest": "^10.6.0",
+    "@storybook/react-vite": "^10.6.0",
     "@tailwindcss/vite": "4.1.12",
     "@types/node": "^25.3.3",
     "@types/node-schedule": "^2.1.8",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "4.7.0",
+    "@vitest/browser": "^3.2.7",
     "electron": "^40.6.1",
     "electron-builder": "^26.8.1",
     "electron-serve": "^3.0.1",
+    "playwright": "^1.63.0",
+    "storybook": "^10.6.0",
     "tailwindcss": "4.1.12",
     "typescript": "^5.9.3",
     "vite": "6.3.5",
     "vite-plugin-electron": "^0.29.0",
-    "vite-plugin-electron-renderer": "^0.14.6"
+    "vite-plugin-electron-renderer": "^0.14.6",
+    "vitest": "^3.2.7"
   }
 }
